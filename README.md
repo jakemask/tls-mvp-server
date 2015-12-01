@@ -1,10 +1,9 @@
-
-## TLS "Minimum Viable Product" Server
+# TLS "Minimum Viable Product" Server
 
 Bare-bones Mirage HTTP-over-TLS server. Pure TCP and `ocaml-tls`, serves a
 static string.
 
-# Build instructions
+## Build instructions
 
 First follow the instructions over at https://mirage.io/wiki/install to install
 Mirage.
@@ -18,3 +17,6 @@ $ make
 ...
 $ ./mir-tls-server
 ```
+
+Then it will be running a tls server at port 4433. If you connect succesfully,
+it will send a short message and then close the connection.
