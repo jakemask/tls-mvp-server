@@ -2,18 +2,7 @@
 open Lwt
 open V1_LWT
 
-let cs_of_lines strs =
-  strs |> String.concat "\r\n"
-       |> Cstruct.of_string
-
-let resp meat =
-  cs_of_lines [
-    "HTTP/1.1 200 OK";
-    "Connection: Close";
-    "Content-type: text/plain";
-    "";
-    meat
-  ]
+let resp meat = meat |> Cstruct.of_string
 
 module Main (C  : CONSOLE)
             (S  : STACKV4)
