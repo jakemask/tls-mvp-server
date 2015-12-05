@@ -16,6 +16,12 @@ struct
   let reply c tls =
     TLS.write tls @@ resp "## We get signal."
 
+  let rec read tls =
+      TLS.read tls >>= function
+          | `Error _ -> TLS.close tls
+          | `Eof -> TLS.close tls
+          | `Ok t -> read tls
+
   let upgrade c conf tcp =
     TLS.server_of_flow conf tcp >>= function
       | `Error _ ->
@@ -23,9 +29,7 @@ struct
       | `Eof ->
           C.log_s c "- end of file while upgrading" >> TCP.close tcp
       | `Ok tls  ->
-          C.log_s c "+ upgrade ok" >>
-          reply c tls >> TLS.close tls >>
-          C.log_s c ". reply sent"
+          reply c tls >> read tls
 
   let port = try int_of_string Sys.argv.(1) with _ -> 4433
   let cert = try `Name Sys.argv.(2) with _ -> `Default
